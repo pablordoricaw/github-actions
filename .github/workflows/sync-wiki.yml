@@ -17,6 +17,6 @@ jobs:
         env:
           WIKI_DIR: wiki/
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_MAIL: ${{ secrets.YOUR_EMAIL }}
+          GH_MAIL: ${{ github.actor }}
           GH_NAME: ${{ github.repository_owner }}
           EXCLUDED_FILES: "a/ b.md"
