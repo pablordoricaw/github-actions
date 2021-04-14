@@ -7,14 +7,32 @@ on:
       branches:
         # And only on master branch
         - master
+  gollum:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
 jobs:
-  deploy-wiki:
+  sync-docs-to-wiki:
     runs-on: ubuntu-latest
+    if: github.event_name != 'gollum'
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: push wiki changes
+        uses: Andrew-Chen-Wang/github-wiki-action@v2
+        env:
+          WIKI_DIR: wiki/
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_MAIL: ${{ github.actor }}
+          GH_NAME: ${{ github.repository_owner }}
+          EXCLUDED_FILES: "a/ b.md"
+  
+  sync-wiki-to-docs:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'gollum'
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
       - name: push wiki changes
         uses: Andrew-Chen-Wang/github-wiki-action@v2
         env:
