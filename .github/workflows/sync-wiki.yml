@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Sync docs to Wiki
-        uses: newrelic/wiki-sync-action@master
+        uses: pablordoricaw/wiki-sync-action@master
         with:
           source: docs
           destination: wiki
@@ -41,7 +41,7 @@ jobs:
           token: ${{ secrets.WIKI_SYNC_PAT_TOKEN }} # allows us to push back to repo
           ref: master
       - name: Sync Wiki to docs
-        uses: newrelic/wiki-sync-action@master
+        uses: pablordoricaw/wiki-sync-action@master
         with:
           source: wiki
           destination: docs
