@@ -49,3 +49,4 @@ jobs:
           gitAuthorName: ${{ env.GIT_AUTHOR_NAME }}
           gitAuthorEmail: ${{ env.GIT_AUTHOR_EMAIL }}"
           branch: master
+          commitMessage: Sync Wiki to docs
