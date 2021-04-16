@@ -3,14 +3,18 @@ on:
   push:
       paths:
         # Trigger only when wiki directory changes
-        - 'wiki/**'
+        - 'docs/**'
       branches:
         # And only on master branch
         - master
+  repository_dispatch:
+    types: [docs]
   gollum:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+env:
+  GIT_AUTHOR_NAME: ${{ github.repository_owner }}
+  GIT_AUTHER_EMAIL: ${{ github.actor }}
 jobs:
   sync-docs-to-wiki:
     runs-on: ubuntu-latest
@@ -18,14 +22,14 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: push wiki changes
-        uses: Andrew-Chen-Wang/github-wiki-action@v2
-        env:
-          WIKI_DIR: wiki/
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_MAIL: ${{ github.actor }}
-          GH_NAME: ${{ github.repository_owner }}
-          EXCLUDED_FILES: "a/ b.md"
+      - name: Sync docs to Wiki
+        uses: newrelic/wiki-sync-action@master
+        with:
+          source: docs
+          destination: wiki
+          token: ${{ secrets.WIKI_SYNC_PAT_TOKEN }}
+          gitAuthorName: ${{ env.GIT_AUTHOR_NAME }}
+          gitAuthorEmail: ${{ env.GIT_AUTHOR_EMAIL }}"
   
   sync-wiki-to-docs:
     runs-on: ubuntu-latest
@@ -33,11 +37,15 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      - name: push wiki changes
-        uses: Andrew-Chen-Wang/github-wiki-action@v2
-        env:
-          WIKI_DIR: wiki/
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_MAIL: ${{ github.actor }}
-          GH_NAME: ${{ github.repository_owner }}
-          EXCLUDED_FILES: "a/ b.md"
+        with:
+          token: ${{ secrets.WIKI_SYNC_PAT_TOKEN }} # allows us to push back to repo
+          ref: master
+      - name: Sync Wiki to docs
+        uses: newrelic/wiki-sync-action@master
+        with:
+          source: wiki
+          destination: docs
+          token: ${{ secrets.WIKI_SYNC_PAT_TOKEN }}
+          gitAuthorName: ${{ env.GIT_AUTHOR_NAME }}
+          gitAuthorEmail: ${{ env.GIT_AUTHOR_EMAIL }}"
+          branch: master
