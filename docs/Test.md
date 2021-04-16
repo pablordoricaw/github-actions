@@ -1,4 +1,4 @@
-## Test
+## Test Syncing
 
-`docs/` to Wiki
-Wiki to `docs/`
+- `docs/` to Wiki
+- Wiki to `docs/`
