@@ -1,4 +1,4 @@
-## Test Syncing
+# Test Syncing
 
 - `docs/` to Wiki
-- Wiki to `docs/`
+  - pablordoricaw/wiki-sync-action
