@@ -1,3 +1,3 @@
 ## Test
 
-`wiki/` to Wiki
+`docs/` to Wiki
